@@ -1,1 +1,89 @@
-/* You can add global styles to this file, and also import other style files */
+@import "primeng/resources/themes/lara-light-cyan/theme.css";
+@import "primeng/resources/primeng.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --h1-size: clamp(1.75rem, 3.5vw + 1rem, 4.5rem); /* Aproximadamente 70px */
+    --h2-size: clamp(1.75rem, 3vw + 1rem, 3.5rem); /* 56px */
+    --h3-size: clamp(1.5rem, 2.5vw + 1rem, 2.5rem); /* Aproximadamente 40px */
+    --h4-size: clamp(1.25rem, 2vw + 0.5rem, 2rem); /* Aproximadamente 32px */
+    --p-size: clamp(1.375rem, 1.5vw + 0.5rem, 1.375rem); /* 22px */
+}
+
+body {
+    margin: 0;
+}
+
+/* 
+.roboto-regular {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+  
+.roboto-medium {
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.roboto-bold {
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.roboto-regular-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: italic;
+}
+
+.roboto-medium-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: italic;
+}
+
+.roboto-bold-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-style: italic;
+}
+
+h1 {
+    font-size: var(--h1-size);
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+h2 {
+    font-size: var(--h2-size);
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+h3 {
+    font-size: var(--h3-size);
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+h4 {
+    font-size: var(--h4-size);
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+p {
+    font-size: var(--p-size);
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+} */
