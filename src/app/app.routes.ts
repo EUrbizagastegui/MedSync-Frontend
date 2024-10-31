@@ -17,9 +17,13 @@ export const routes: Routes = [
         children: [
             {
                 path: 'home',
-                loadComponent: () => import('./pages/dashboard/home/home.component').then(m => m.HomeComponent)
+                loadComponent: () => import('./pages/dashboard/home/home.component').then(m => m.HomeComponent),
+            },
+            {
+              path: 'profile',
+              loadComponent: () => import('./pages/dashboard/profile/profile.component').then(m => m.ProfileComponent),
             }
-        ]
+        ],
     },
 
     // RUTAS DE AUTHENTICATION
