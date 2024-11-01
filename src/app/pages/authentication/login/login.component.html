@@ -1,4 +1,22 @@
-<p>login works!</p>
-
-<p-button [label]="texts.button1"></p-button>
-<p-button [label]="texts.button2"></p-button>
+<div class="h-screen grid grid-cols-2">
+    <div class="flex justify-center items-center bg-gray-100">
+        <form class="flex flex-col items-center w-1/2 rounded-2xl bg-[#06b6d4] p-10" [formGroup]="signInForm()" (ngSubmit)="submitForm()">
+            <h2 class="mt-0 text-white">{{texts.title}}</h2>
+            <div class="flex flex-col gap-4 w-full">
+                @for (item of inputs; track $index) {
+                    <label for="{{item.id}}" class="text-white">{{item.label}}</label>
+                    <input type="{{item.type}}" pInputText formControlName="{{item.id}}" class="border border-transparent rounded p-2">
+                }
+                <a href="">{{texts.recoverPassword}}</a>
+            </div>
+            
+            <div class="flex flex-col items-center w-3/4 gap-4 mt-4">
+                <p-button [label]="buttons[0].label" [severity]="'secondary'"></p-button>
+                <p-button [label]="buttons[1].label" [style]="{ 'background-color': 'white' , 'color': '#334154'}" class="border border-transparent"></p-button>
+            </div>
+        </form>
+    </div>
+    <div class="flex justify-center items-center bg-[#06b6d4]">
+        
+    </div>
+</div>

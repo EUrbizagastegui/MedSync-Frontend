@@ -1,23 +1,43 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ButtonModule],
+  imports: [ButtonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
+
 export class LoginComponent {
   texts = {
     title: 'MedSync',
     paragraph: 'Bienvenido a MedSync. Inicie sesión o regístrese para disfrutar de la experiencia de nuestro servicio de monitoreo de ritmo cardiaco.',
-    button1: 'Iniciar sesión',
-    button2: 'Registrarse',
     recoverPassword: 'Olvidé mi contraseña',
   }
-  inputs = {
-    email: 'Correo',
-    password: 'Contraseña'
+  inputs = [
+    { id: 'email', label: 'Correo', type: 'email' },
+    { id: 'password', label: 'Contraseña', type: 'password' }
+  ];
+
+  buttons = [
+    { id: 'button1', label: 'Iniciar Sesión' },
+    { id: 'button2', label: 'Registrarse' }
+  ];
+
+  signInForm = signal<FormGroup>(
+    new FormGroup({
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required])
+    })
+  )
+
+  submitForm() {
+    if (this.signInForm().valid) {
+      console.log("Form válido");
+    } else {
+      console.log("Form inválido");
+    }
   }
 }
