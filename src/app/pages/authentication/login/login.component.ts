@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
@@ -33,9 +34,12 @@ export class LoginComponent {
     })
   )
 
+  constructor(private router: Router) {}
+  
   submitForm() {
     if (this.signInForm().valid) {
       console.log("Form válido");
+      this.router.navigate(['/home']);
     } else {
       console.log("Form inválido");
     }

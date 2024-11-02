@@ -16,6 +16,13 @@ body {
     margin: 0;
 }
 
+@layer utilities {
+    .text-jc {
+        text-align: justify;
+        text-align-last: center;
+    }
+}
+
 /* 
 .roboto-regular {
     font-family: "Roboto", sans-serif;
