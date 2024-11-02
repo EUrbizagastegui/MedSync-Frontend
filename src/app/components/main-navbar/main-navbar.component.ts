@@ -10,5 +10,5 @@ import { ToolbarModule } from 'primeng/toolbar';
   styleUrl: './main-navbar.component.css'
 })
 export class MainNavbarComponent {
-
+  string = 'string';
 }
