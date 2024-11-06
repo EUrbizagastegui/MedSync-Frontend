@@ -1,0 +1,23 @@
+.circle-progress-container {
+    position: relative;
+    width: 200px;  /* Tamaño del círculo */
+    height: 200px; /* Tamaño del círculo */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 8px solid #e0e0e0;  /* Círculo exterior hueco */
+  }
+  
+  .circle-icon {
+    font-size: 8rem; /* Aumento del tamaño del ícono */
+    color: #06b6d4; /* Color del círculo, el mismo que el del corazón */
+  }
+  
+  .circle-number {
+    position: absolute;
+    font-size: 3rem; /* Tamaño del número dentro del círculo */
+    color: #06b6d4; /* El color del número */
+    font-weight: bold;
+  }
+  

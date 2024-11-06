@@ -1,8 +1,9 @@
 <div class="flex flex-col justify-center items-center mt-20">
     <div class="flex items-center gap-4">
-        <circle-progress 
-          [percent]="75">
-        </circle-progress>
+        <div class="circle-progress-container">
+            <i class="pi pi-circle circle-icon"></i>
+            <div class="circle-number">{{ progress }}</div> <!-- Muestra el valor de progress dinámicamente -->
+        </div>       
         <div class="flex flex-col gap-4 items-center">
             <i class="pi pi-heart" style="color: #06b6d4;"></i>
             <p class="m-0">BPM</p>
