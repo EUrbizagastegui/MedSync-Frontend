@@ -1,0 +1,9 @@
+<h4 class="text-center font-bold text-[32px] mb-10">Historial Diario de Frecuencia Cardiaca</h4>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+  <p-card *ngFor="let registro of data" class="custom-color text-white p-5 rounded-lg shadow-lg">
+    <h4 class="text-center font-semibold title-card">{{ registro.fecha }}</h4>
+    <p class="text-center card-text"><strong>Promedio diario:</strong> {{ registro.promedio }} latidos por minuto</p>
+    <p class="text-center card-text"><strong>Frecuencia máxima en el día:</strong> {{ registro.maxima }} latidos por minuto</p>
+    <p class="text-center card-text"><strong>Frecuencia mínima en el día:</strong> {{ registro.minima }} latidos por minuto</p>
+  </p-card>
+</div>
