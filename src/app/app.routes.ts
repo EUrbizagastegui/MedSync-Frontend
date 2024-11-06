@@ -22,6 +22,10 @@ export const routes: Routes = [
             {
               path: 'profile',
               loadComponent: () => import('./pages/dashboard/profile/profile.component').then(m => m.ProfileComponent),
+            },
+            {
+              path: 'daily-history',
+              loadComponent: () => import('./pages/daily-history/daily-history.component').then(m => m.DailyHistoryComponent),
             }
         ],
     },

@@ -1,9 +1,14 @@
 <p-toolbar>
-    <div class="p-toolbar-group-start">
-        <p-button [label]="'MedSync'"></p-button>
+    <div class="p-toolbar-group-start" (click)="navigateTo('/home')">
+        <h4 class="m-0">MedSync</h4>
     </div>
 
-    <div class="p-toolbar-group-end">
-        <p-button [label]="'Opción'"></p-button>
+    <div class="flex flex-row-reverse gap-4 p-toolbar-group-end">
+        @for (option of options; track $index) {
+            <p-button
+            [label]="option.label"
+            (click)="navigateTo(option.url)"
+            ></p-button>
+        }
     </div>
 </p-toolbar>
