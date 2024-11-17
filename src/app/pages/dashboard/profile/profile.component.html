@@ -2,19 +2,20 @@
   <div class="image-profile-container">
     <p-image
       src="{{information.image}}"
-      alt="Image"
+      alt="Imagen del Perfil"
       width="400"
-      [preview]="true"></p-image>
+      [preview]="false"></p-image>
   </div>
 
   <div class="info-container">
     <h1>Información del Perfil</h1>
     <div class="info-data">
       <p><strong>Nombres: </strong>{{information.names}}</p>
-      <p><strong>Apellidos:</strong>{{information.surnames}}</p>
-      <p><strong>Dirección: </strong>{{information.address}}</p>
-      <p><strong>Teléfono: </strong>{{information.telephone}}</p>
+      <p><strong>Apellidos: </strong>{{information.surnames}}</p>
       <p><strong>Correo electrónico: </strong>{{information.email}}</p>
+      <p><strong>Teléfono: </strong>{{information.telephone}}</p>
+      <p><strong>Peso: </strong>{{information.weight}} kg</p>
+      <p><strong>Condición médica: </strong>{{information.disease}}</p>
     </div>
 
     <div class="buttons-container">
@@ -29,33 +30,27 @@
   <p>Actualice su información</p>
   <p-inputGroup>
     <p-inputGroupAddon>
-      <i class="pi pi-user"></i>
-    </p-inputGroupAddon>
-    <input type="text" pInputText [(ngModel)]="information.names">
-  </p-inputGroup><br>
-  <p-inputGroup>
-    <p-inputGroupAddon>
-      <i class="pi pi-user"></i>
-    </p-inputGroupAddon>
-    <input type="text" pInputText [(ngModel)]="information.surnames">
-  </p-inputGroup><br>
-  <p-inputGroup>
-    <p-inputGroupAddon>
-      <i class="pi pi-address-book"></i>
-    </p-inputGroupAddon>
-    <input type="text" pInputText [(ngModel)]="information.address">
-  </p-inputGroup><br>
-  <p-inputGroup>
-    <p-inputGroupAddon>
       <i class="pi pi-phone"></i>
     </p-inputGroupAddon>
     <input type="number" pInputText [(ngModel)]="information.telephone">
   </p-inputGroup><br>
   <p-inputGroup>
     <p-inputGroupAddon>
-      <i class="pi pi-envelope"></i>
+      <i class="pi pi-user"></i>
     </p-inputGroupAddon>
-    <input type="text" pInputText [(ngModel)]="information.email">
+    <input type="number" pInputText [(ngModel)]="information.weight">
+  </p-inputGroup><br>
+  <p-inputGroup>
+    <p-inputGroupAddon>
+      <i class="pi pi-address-book"></i>
+    </p-inputGroupAddon>
+    <input type="text" pInputText [(ngModel)]="information.image">
+  </p-inputGroup><br>
+  <p-inputGroup>
+    <p-inputGroupAddon>
+      <i class="pi pi-heart-fill"></i>
+    </p-inputGroupAddon>
+    <input type="text" pInputText [(ngModel)]="information.disease">
   </p-inputGroup><br>
   <div class="info-buttons-dialog">
     <p-button [label]="texts.btSave" (onClick)="saveEdit()"/>
@@ -65,38 +60,34 @@
 
 <p-dialog header="Contacto de Emergencia" [modal]="true" [(visible)]="displayDialog1" [style]="{ width: '30rem' }">
   <p>Agregue un contacto de emergencia</p>
+  <label>Ingrese el telefono para su asignación: </label><br>
   <p-inputGroup>
     <p-inputGroupAddon>
       <i class="pi pi-phone"></i>
     </p-inputGroupAddon>
-    <input type="number" pInputText [(ngModel)]="contactData.telephone" placeholder="Telofono">
-  </p-inputGroup><br>
-  <p-inputGroup>
-    <p-inputGroupAddon>
-      <i class="pi pi-user"></i>
-    </p-inputGroupAddon>
-    <input type="text" pInputText [(ngModel)]="contactData.names" placeholder="Nombres">
-  </p-inputGroup><br>
-  <p-inputGroup>
-    <p-inputGroupAddon>
-      <i class="pi pi-user"></i>
-    </p-inputGroupAddon>
-    <input type="text" pInputText [(ngModel)]="contactData.firstSurname" placeholder="Apellido Paterno">
-  </p-inputGroup><br>
-  <p-inputGroup>
-    <p-inputGroupAddon>
-      <i class="pi pi-user"></i>
-    </p-inputGroupAddon>
-    <input type="text" pInputText [(ngModel)]="contactData.secondSurname" placeholder="Apellido Materno">
-  </p-inputGroup><br>
-  <p-inputGroup>
-    <p-inputGroupAddon>
-      <i class="pi pi-envelope"></i>
-    </p-inputGroupAddon>
-    <input type="text" pInputText [(ngModel)]="contactData.email" placeholder="Correo electrónico">
-  </p-inputGroup><br>
+    <input type="number" pInputText [(ngModel)]="contactData.telephone" placeholder="Telefono">
+  </p-inputGroup>
   <div class="contact-buttons-dialog">
     <p-button [label]="texts.btSave" (onClick)="saveContact()"/>
     <p-button [label]="texts.btCancel" severity="secondary" (onClick)="cancelContact()"/>
-  </div>
+  </div><br>
+  <div class="image-profile-container">
+    <p-image
+      src="{{information.image}}"
+      alt="Imagen del Contacto de Emergencia"
+      width="200"
+      [preview]="true"></p-image>
+  </div><br>
+  <p-inputGroup>
+    <p-inputGroupAddon>
+      <i class="pi pi-user"></i>
+    </p-inputGroupAddon>
+    <input type="text" [disabled]="true"  pInputText [(ngModel)]="contactData.name" placeholder="Nombres">
+  </p-inputGroup><br>
+  <p-inputGroup>
+    <p-inputGroupAddon>
+      <i class="pi pi-user"></i>
+    </p-inputGroupAddon>
+    <input type="text" [disabled]="true"  pInputText [(ngModel)]="contactData.lastName" placeholder="Apellidos">
+  </p-inputGroup>
 </p-dialog>

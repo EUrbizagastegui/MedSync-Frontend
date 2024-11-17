@@ -31,18 +31,18 @@ export class ProfileComponent {
   information = {
     names: 'Esteban',
     surnames: 'Pasco',
-    address: 'Av. Siempreviva 772',
+    weight: '70',
+    disease: 'Hipertension',
     telephone: '912345678',
     email: 'estebfer@gmail.com',
     image: 'https://b2472105.smushcdn.com/2472105/wp-content/uploads/2023/01/Perfil-Profesional-_63-819x1024.jpg?lossy=1&strip=1&webp=1'
   }
 
   contactData = {
-    names: '' ,
-    firstSurname: '',
-    secondSurname: '',
+    name: '' ,
+    lastName: '',
     telephone: '',
-    email: '',
+    image: '',
   }
 
   texts = {
