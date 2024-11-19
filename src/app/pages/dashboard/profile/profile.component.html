@@ -1,29 +1,59 @@
-<div class="profile-container">
-  <div class="image-profile-container">
-    <p-image
-      src="{{information.profilePictureUrl}}"
-      alt="Imagen del Perfil"
-      width="400"
-      [preview]="false"></p-image>
-  </div>
-
-  <div class="info-container">
-    <h1>Información del Perfil</h1>
-    <div class="info-data">
-      <p><strong>Nombres: </strong>{{information.name}}</p>
-      <p><strong>Apellidos: </strong>{{information.lastName}}</p>
-      <p><strong>Teléfono: </strong>{{information.phoneNumber}}</p>
-      <p><strong>Peso: </strong>{{information.weight}} kg</p>
-      <p><strong>Condición médica: </strong>{{information.disease}}</p>
+<div *ngIf="isPatient">
+  <div class="profile-container">
+    <div class="image-profile-container">
+      <p-image
+        src="{{information.profilePictureUrl}}"
+        alt="Imagen del Perfil"
+        width="400"
+        [preview]="false"></p-image>
     </div>
 
-    <div class="buttons-container">
-      <p-button (onClick)="openDialog()" [label]="texts.button1"></p-button>
-      <p-button (onClick)="openDialogContact()" [label]="texts.button2"></p-button>
-      <p-button (onClick)="logout()" [label]="texts.button3"></p-button>
+    <div class="info-container">
+      <h1>Información del Perfil</h1>
+      <div class="info-data">
+        <p><strong>Nombres: </strong>{{information.name}}</p>
+        <p><strong>Apellidos: </strong>{{information.lastName}}</p>
+        <p><strong>Teléfono: </strong>{{information.phoneNumber}}</p>
+        <p><strong>Peso: </strong>{{information.weight}} kg</p>
+        <p><strong>Condición médica: </strong>{{information.disease}}</p>
+      </div>
+
+      <div class="buttons-container">
+        <p-button (onClick)="openDialog()" [label]="texts.button1"></p-button>
+        <p-button (onClick)="openDialogContact()" [label]="texts.button2"></p-button>
+        <p-button (onClick)="logout()" [label]="texts.button3"></p-button>
+      </div>
     </div>
   </div>
 </div>
+
+<div *ngIf="isCarer">
+  <div class="profile-container">
+    <div class="image-profile-container">
+      <p-image
+        src="{{contactData.profilePictureUrl}}"
+        alt="Imagen del Perfil"
+        width="400"
+        [preview]="false"></p-image>
+    </div>
+
+    <div class="info-container">
+      <h1>Información del Perfil</h1>
+      <div class="info-data">
+        <p><strong>Nombres: </strong>{{contactData.name}}</p>
+        <p><strong>Apellidos: </strong>{{contactData.lastName}}</p>
+        <p><strong>Teléfono: </strong>{{contactData.phoneNumber}}</p>
+      </div>
+
+      <div class="buttons-container">
+        <p-button (onClick)="openDialogContact2()" [label]="texts.button1"></p-button>
+        <p-button (onClick)="logout()" [label]="texts.button3"></p-button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 <p-dialog header="Editar Perfil" [modal]="true" [(visible)]="displayDialog" [style]="{ width: '30rem' }">
   <p>Actualice su información</p>
@@ -89,4 +119,24 @@
     </p-inputGroupAddon>
     <input type="text" [disabled]="true"  pInputText [(ngModel)]="contactData.lastName" placeholder="Apellidos">
   </p-inputGroup>
+</p-dialog>
+
+<p-dialog header="Editar Perfil Cuidador" [modal]="true" [(visible)]="displayDialog2" [style]="{ width: '30rem' }">
+  <p>Actualice su información</p>
+  <p-inputGroup>
+    <p-inputGroupAddon>
+      <i class="pi pi-phone"></i>
+    </p-inputGroupAddon>
+    <input type="number" pInputText [(ngModel)]="contactData.phoneNumber" placeholder="Teléfono">
+  </p-inputGroup><br>
+  <p-inputGroup>
+    <p-inputGroupAddon>
+      <i class="pi pi-address-book"></i>
+    </p-inputGroupAddon>
+    <input type="text" pInputText [(ngModel)]="contactData.profilePictureUrl" placeholder="Url de foto">
+  </p-inputGroup><br>
+  <div class="info-buttons-dialog">
+    <p-button [label]="texts.btSave" (onClick)="saveEdit()"/>
+    <p-button [label]="texts.btCancel" severity="secondary" (onClick)="cancelEditCarer()" />
+  </div>
 </p-dialog>
