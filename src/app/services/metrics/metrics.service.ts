@@ -29,7 +29,14 @@ export class MetricsService {
     return this.http.get(`${this.baseUrl}/${id}`, this.httpOptions);
   }
 
-  getMetricByDate(date: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/${date}`, this.httpOptions);
+  getMetricByDate(patientId: number, date: string): Promise<any> {
+    const url = `${this.baseUrl}/date?patientId=${patientId}&date=${date}`;
+
+    return new Promise((resolve, reject) => {
+      this.http.get(url, this.httpOptions).subscribe({
+        next: (response) => resolve(response),
+        error: (err) => reject(err),
+      })
+    });
   }
 }
