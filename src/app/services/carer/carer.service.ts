@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class CarerService {
 
-  private baseUrl = 'http://localhost:8080/api/v1/carer';
+  private baseUrl = 'https://medsync-api.up.railway.app/api/v1/carer';
   private getToken(): string | null {
     return localStorage.getItem('authToken');
   }

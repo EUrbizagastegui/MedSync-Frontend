@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class AuthenticationService {
 
-  private baseUrl = 'http://localhost:8080/api/v1/auth';
+  private baseUrl = 'https://medsync-api.up.railway.app/api/v1/auth';
 
   constructor(private http: HttpClient) { }
 

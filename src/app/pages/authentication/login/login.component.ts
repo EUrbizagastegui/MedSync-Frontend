@@ -62,6 +62,7 @@ export class LoginComponent {
         // Guardar el token y el ID en el localStorage
         localStorage.setItem('authToken', response.token);
         localStorage.setItem('userId', decoded.id.toString());
+        localStorage.setItem('userRole', decoded.role.toString());
 
         console.log('ID del usuario:', decoded.id);
   

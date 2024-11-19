@@ -7,7 +7,7 @@ import {Observable} from 'rxjs';
 })
 export class MetricsService {
 
-  private baseUrl = 'http://localhost:8080/api/v1/metrics';
+  private baseUrl = 'https://medsync-api.up.railway.app/api/v1/metrics';
   private getToken(): string | null {
     return localStorage.getItem('authToken');
   }
