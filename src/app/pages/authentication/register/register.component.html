@@ -1,15 +1,35 @@
-<div class="flex flex-col justify-center items-center">
-    <p-card header="Registrate">
-        @for (item of options; track $index) {
-            @if (item.type == 'input') {
-                <input type="{{item.type}}" pInputText formControlName="{{item.id}}">
-            } @else {
-                <p-dropdown 
-                [options]="roleptions" 
-                formControlName="{{item.id}}" 
-                optionLabel="role"
-                placeholder="Seleccione un tipo de usuario" />
+<div class="flex flex-col justify-center items-center min-h-dvh">
+    <p-toast />
+    <p-card header="Registrate"
+    class="w-1/2 bg-[#06b6d4] rounded-2xl p-10 text-center">
+        <form
+        class="flex flex-col items-center gap-4 w-full"
+        [formGroup]="signUpForm()"
+        (ngSubmit)="submitForm()">
+            @for (item of options; track $index) {
+                <label for="{{item.id}}">{{item.label}}</label>
+                @if (item.type == 'input') {
+                    <input
+                    [id]="item.id"
+                    type="{{item.type}}"
+                    pInputText formControlName="{{item.id}}"
+                    class="border rounded p-2 w-1/2">
+                } @else {
+                    <p-dropdown 
+                    [options]="roleptions" 
+                    formControlName="{{item.id}}" 
+                    placeholder="Seleccione un tipo de usuario"
+                    class="w-1/2 p-2"/>
+                }
             }
-        }
+            <div class="flex items-center justify-center w-3/4 gap-4 mt-4">
+                <p-button [label]="buttons[0].label" [severity]="'secondary'" (onClick)="surfToRoute('/login')"></p-button>
+                <p-button
+                [label]="buttons[1].label"
+                [style]="{ 'background-color': 'white' , 'color': '#334154'}"
+                class="border border-transparent"
+                [type]="'submit'"></p-button>
+            </div>
+        </form>
     </p-card>
 </div>

@@ -4,13 +4,16 @@ import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { AuthenticationService } from '../../../services/authentication/authentication.service';
 import { jwtDecode, JwtPayload } from "jwt-decode";
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ButtonModule, ReactiveFormsModule],
+  imports: [ButtonModule, ReactiveFormsModule, ToastModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
+  providers: [MessageService]
 })
 
 export class LoginComponent {
@@ -36,8 +39,12 @@ export class LoginComponent {
     })
   )
 
-  constructor(private authenticationService: AuthenticationService, private router: Router) {}
+  constructor(private messageService: MessageService, private authenticationService: AuthenticationService, private router: Router) {}
   
+  showError(error: any) {
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: error });
+  }
+
   async submitForm() {
     if (this.signInForm().valid) {
       const formValue = this.signInForm().value;
@@ -47,20 +54,30 @@ export class LoginComponent {
         const response = await this.authenticationService.signIn({
           email: formValue.email,
           password: formValue.password,
-        }).then((response) => {
-          const decoded = jwtDecode<JwtPayload>(response.token) as { id: number; role: string; sub: string; iat: number; exp: number };;
-          localStorage.setItem('authToken', response.token);
-          localStorage.setItem('userId', decoded.id.toString());
-        }).finally(() => {
-          // Navegar a la página principal
-          this.router.navigate(['/home']);
         });
+  
+        // Si la respuesta es correcta, procesar el token
+        const decoded = jwtDecode<JwtPayload>(response.token) as { id: number; role: string; sub: string; iat: number; exp: number };
+  
+        // Guardar el token y el ID en el localStorage
+        localStorage.setItem('authToken', response.token);
+        localStorage.setItem('userId', decoded.id.toString());
+  
+        // Redirigir a la página principal solo si la respuesta fue exitosa
+        this.router.navigate(['/home']);
+        
       } catch (error) {
         console.error('Error al iniciar sesión:', error);
-        // Puedes mostrar un mensaje de error al usuario aquí
+        // Puedes mostrar un mensaje de error al usuario aquí, por ejemplo:
+        this.showError('Credenciales inválidas, por favor intente de nuevo.');
       }
     } else {
       console.log('Formulario inválido');
+      this.showError('Por favor, complete todos los campos.');
     }
+  }
+
+  surfToRegister() {
+    this.router.navigate(['/register']);
   }
 }
