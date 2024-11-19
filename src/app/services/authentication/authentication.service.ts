@@ -28,8 +28,13 @@ export class AuthenticationService {
     return { headers };
   }
 
-  signUp(data: any) {
-    return this.http.post(`${this.baseUrl}/signup`, data, this.getHttpOptions());
+  signUp(data: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http.post(this.baseUrl + '/signup', data).subscribe({
+        next: (response) => resolve(response),
+        error: (err) => reject(err),
+      })
+    });
   }
 
   signIn(data: any): Promise<any> {
