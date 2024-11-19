@@ -62,6 +62,8 @@ export class LoginComponent {
         // Guardar el token y el ID en el localStorage
         localStorage.setItem('authToken', response.token);
         localStorage.setItem('userId', decoded.id.toString());
+
+        console.log('ID del usuario:', decoded.id);
   
         // Redirigir a la página principal solo si la respuesta fue exitosa
         this.router.navigate(['/home']);

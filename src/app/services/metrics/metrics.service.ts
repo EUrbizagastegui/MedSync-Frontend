@@ -8,11 +8,12 @@ import {Observable} from 'rxjs';
 export class MetricsService {
 
   private baseUrl = 'http://localhost:8080/api/v1/metrics'; // URL base para métricas
-  private token = 'eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUEFUSUVOVCIsImlkIjoxLCJzdWIiOiJjaHVwZXRpbkBnbWFpbC5jb20iLCJpYXQiOjE3MzE5ODQyMDIsImV4cCI6MTczMjU4OTAwMn0.g52R9JsGFbtPdsSCJwCEGJUDlZzdAmNZJXE_B0Y-SoA'; // Token de autenticación (reemplazar con tu token real)
-
+  private getToken(): string | null {
+    return localStorage.getItem('authToken');
+  }
   private httpOptions = {
     headers: new HttpHeaders({
-      'Authorization': `Bearer ${this.token}`,
+      'Authorization': `Bearer ${this.getToken()}`,
       'Content-Type': 'application/json'
     })
   };
