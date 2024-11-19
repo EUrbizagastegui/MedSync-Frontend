@@ -1,0 +1,15 @@
+<div class="flex flex-col justify-center items-center">
+    <p-card header="Registrate">
+        @for (item of options; track $index) {
+            @if (item.type == 'input') {
+                <input type="{{item.type}}" pInputText formControlName="{{item.id}}">
+            } @else {
+                <p-dropdown 
+                [options]="roleptions" 
+                formControlName="{{item.id}}" 
+                optionLabel="role"
+                placeholder="Seleccione un tipo de usuario" />
+            }
+        }
+    </p-card>
+</div>
