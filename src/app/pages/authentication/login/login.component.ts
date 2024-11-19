@@ -2,6 +2,8 @@ import { Component, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
+import { AuthenticationService } from '../../../services/authentication/authentication.service';
+import { jwtDecode, JwtPayload } from "jwt-decode";
 
 @Component({
   selector: 'app-login',
@@ -34,14 +36,31 @@ export class LoginComponent {
     })
   )
 
-  constructor(private router: Router) {}
+  constructor(private authenticationService: AuthenticationService, private router: Router) {}
   
-  submitForm() {
+  async submitForm() {
     if (this.signInForm().valid) {
-      console.log("Form válido");
-      this.router.navigate(['/home']);
+      const formValue = this.signInForm().value;
+
+      try {
+        // Llamar al método signIn del servicio con los datos del formulario
+        const response = await this.authenticationService.signIn({
+          email: formValue.email,
+          password: formValue.password,
+        }).then((response) => {
+          const decoded = jwtDecode<JwtPayload>(response.token) as { id: number; role: string; sub: string; iat: number; exp: number };;
+          localStorage.setItem('authToken', response.token);
+          localStorage.setItem('userId', decoded.id.toString());
+        }).finally(() => {
+          // Navegar a la página principal
+          this.router.navigate(['/home']);
+        });
+      } catch (error) {
+        console.error('Error al iniciar sesión:', error);
+        // Puedes mostrar un mensaje de error al usuario aquí
+      }
     } else {
-      console.log("Form inválido");
+      console.log('Formulario inválido');
     }
   }
 }
