@@ -36,4 +36,8 @@ export class CarerService {
   getCarerByPhoneNumber(phoneNumber: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/phone/${phoneNumber}`, this.httpOptions);
   }
+
+  getPatentByCarerId(id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/${id}/patient`, this.httpOptions);
+  }
 }
