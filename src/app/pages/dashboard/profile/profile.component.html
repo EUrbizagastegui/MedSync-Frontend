@@ -1,7 +1,7 @@
 <div class="profile-container">
   <div class="image-profile-container">
     <p-image
-      src="{{information.image}}"
+      src="{{information.profilePictureUrl}}"
       alt="Imagen del Perfil"
       width="400"
       [preview]="false"></p-image>
@@ -10,10 +10,9 @@
   <div class="info-container">
     <h1>Información del Perfil</h1>
     <div class="info-data">
-      <p><strong>Nombres: </strong>{{information.names}}</p>
-      <p><strong>Apellidos: </strong>{{information.surnames}}</p>
-      <p><strong>Correo electrónico: </strong>{{information.email}}</p>
-      <p><strong>Teléfono: </strong>{{information.telephone}}</p>
+      <p><strong>Nombres: </strong>{{information.name}}</p>
+      <p><strong>Apellidos: </strong>{{information.lastName}}</p>
+      <p><strong>Teléfono: </strong>{{information.phoneNumber}}</p>
       <p><strong>Peso: </strong>{{information.weight}} kg</p>
       <p><strong>Condición médica: </strong>{{information.disease}}</p>
     </div>
@@ -32,25 +31,25 @@
     <p-inputGroupAddon>
       <i class="pi pi-phone"></i>
     </p-inputGroupAddon>
-    <input type="number" pInputText [(ngModel)]="information.telephone">
+    <input type="number" pInputText [(ngModel)]="information.phoneNumber" placeholder="Teléfono">
   </p-inputGroup><br>
   <p-inputGroup>
     <p-inputGroupAddon>
       <i class="pi pi-user"></i>
     </p-inputGroupAddon>
-    <input type="number" pInputText [(ngModel)]="information.weight">
+    <input type="number" pInputText [(ngModel)]="information.weight" placeholder="Peso">
   </p-inputGroup><br>
   <p-inputGroup>
     <p-inputGroupAddon>
       <i class="pi pi-address-book"></i>
     </p-inputGroupAddon>
-    <input type="text" pInputText [(ngModel)]="information.image">
+    <input type="text" pInputText [(ngModel)]="information.profilePictureUrl" placeholder="Url de foto">
   </p-inputGroup><br>
   <p-inputGroup>
     <p-inputGroupAddon>
       <i class="pi pi-heart-fill"></i>
     </p-inputGroupAddon>
-    <input type="text" pInputText [(ngModel)]="information.disease">
+    <input type="text" pInputText [(ngModel)]="information.disease" placeholder="Situación médica">
   </p-inputGroup><br>
   <div class="info-buttons-dialog">
     <p-button [label]="texts.btSave" (onClick)="saveEdit()"/>
@@ -65,7 +64,7 @@
     <p-inputGroupAddon>
       <i class="pi pi-phone"></i>
     </p-inputGroupAddon>
-    <input type="number" pInputText [(ngModel)]="contactData.telephone" placeholder="Telefono">
+    <input type="number" pInputText [(ngModel)]="contactData.phoneNumber" placeholder="Telefono">
   </p-inputGroup>
   <div class="contact-buttons-dialog">
     <p-button [label]="texts.btSave" (onClick)="saveContact()"/>
@@ -73,7 +72,7 @@
   </div><br>
   <div class="image-profile-container">
     <p-image
-      src="{{information.image}}"
+      src="{{contactData.profilePictureUrl}}"
       alt="Imagen del Contacto de Emergencia"
       width="200"
       [preview]="true"></p-image>
