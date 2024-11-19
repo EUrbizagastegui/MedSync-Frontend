@@ -7,10 +7,11 @@ import {Observable} from 'rxjs';
 })
 export class MetricsService {
 
-  private baseUrl = 'http://localhost:8080/api/v1/metrics'; // URL base para métricas
+  private baseUrl = 'http://localhost:8080/api/v1/metrics';
   private getToken(): string | null {
     return localStorage.getItem('authToken');
   }
+
   private httpOptions = {
     headers: new HttpHeaders({
       'Authorization': `Bearer ${this.getToken()}`,
