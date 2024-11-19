@@ -32,7 +32,7 @@ export class ProfileComponent implements OnInit {
   displayDialog: boolean = false;
   displayDialog1: boolean = false;
 
-  constructor(private patientService: PatientService, private messageService: MessageService) {
+  constructor(private patientService: PatientService, private carerService: CarerService,private messageService: MessageService) {
   }
 
   ngOnInit() {
@@ -52,6 +52,7 @@ export class ProfileComponent implements OnInit {
   }
 
   contactData = {
+    id: '',
     name: '' ,
     lastName: '',
     phoneNumber: '',
@@ -124,6 +125,46 @@ export class ProfileComponent implements OnInit {
   }
 
   saveContact() {
+    this.carerService.getCarerByPhoneNumber(this.contactData.phoneNumber).subscribe({
+      next: (data) => {
+        this.contactData.name = data.name;
+        this.contactData.lastName = data.lastName;
+        this.contactData.profilePictureUrl = data.profilePictureUrl;
+
+        const carerAssignment = {
+          patientId: this.information.id,
+          carerId: data.id
+        };
+
+        this.patientService.updatePatientCarer(this.information.id, carerAssignment).subscribe({
+          next: () => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Éxito',
+              detail: 'Cuidador asignado correctamente al paciente'
+            });
+            this.displayDialog1 = false;
+          },
+          error: (err) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'No se pudo asignar el cuidador al paciente'
+            });
+            console.error(err);
+          }
+        });
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No se pudo encontrar el cuidador'
+        });
+        console.error(err);
+      }
+    });
+
     this.displayDialog1 = false;
   }
 

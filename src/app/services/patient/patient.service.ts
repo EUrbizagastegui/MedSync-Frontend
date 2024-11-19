@@ -19,8 +19,8 @@ export class PatientService {
 
   constructor(private http: HttpClient) { }
 
-  getPatients() : Observable<any> {
-    return this.http.get(this.baseUrl, this.httpOptions);
+  getPatients(): Observable<any[]> {
+    return this.http.get<any[]>(this.baseUrl, this.httpOptions);
   }
 
   getPatient(id: string): Observable<any> {
@@ -31,8 +31,7 @@ export class PatientService {
     return this.http.put(`${this.baseUrl}/${id}`, patientData, this.httpOptions);
   }
 
-  /*
-  updateCarer(patientId: number, carerId: number): Observable<any> {
-    return this.http.put(`${this.baseUrl}/${patientId}/carer`, carerData, this.httpOptions);
-  }*/
+  updatePatientCarer(patientId: string, carerId: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/${patientId}/carer`, carerId, this.httpOptions);
+  }
 }
