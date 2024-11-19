@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 // https://www.npmjs.com/package/angular-svg-round-progressbar
 import {RoundProgressComponent} from 'angular-svg-round-progressbar';
 import { MetricsService } from '../../../services/metrics/metrics.service';
+import { CarerService } from '../../../services/carer/carer.service';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +14,10 @@ import { MetricsService } from '../../../services/metrics/metrics.service';
 export class HomeComponent implements OnInit, OnDestroy {
   progress = 0;
   max=130;
-  userId=0;
+  userId=Number(localStorage.getItem('userId'));;
+  userRole: string = localStorage.getItem('userRole')!;
+  patientId: any;
+  data: any[] = [];
   
   currentDate = '';
   private intervalId: any;
@@ -21,7 +25,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   level='';
 
   // 45 y 100
-  constructor(private metricsService: MetricsService) { }
+  constructor(private carerService: CarerService, private metricsService: MetricsService) { }
 
   getCurrentDate(): string {
     const today = new Date();
@@ -43,6 +47,34 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
+  async getMetricsByIdCarer(carerId: number): Promise<void> {
+    console.log("OBTENIENDO METRICAS DEL PACIENTE.");
+    this.carerService.getPatentByCarerId(carerId).subscribe(
+      (response: any) => {
+        console.log('Respuesta de la API:', response);
+
+        if (response && response.id) {
+          console.log("OBTENIENDO ID DEL PACIENTE.");
+          this.userId = response.id; // Almacena el ID del paciente
+          console.log(`ID del paciente asociado: ${this.userId}`);
+
+        } else {
+          console.error('No se encontró un paciente asociado al cuidador.');
+        }
+      },
+      (error) => {
+        console.error('Error al obtener el ID del paciente asociado:', error);
+      }
+    );
+  }
+
+  formatDate(dateArray: number[]): string {
+    const [year, month, day] = dateArray;
+    const date = new Date(year, month - 1, day);
+    const options: Intl.DateTimeFormatOptions = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+    return date.toLocaleDateString('es-ES', options).toUpperCase();
+  }
+
   getLevel(bpm: any) {
     if (bpm < 45) {
       this.color = '#ff0000';
@@ -58,7 +90,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // Ejecutar inmediatamente
-    this.userId = Number(localStorage.getItem('userId'));
+    if (this.userRole === 'CARER') {
+      console.log("ID DEL CARER: ", this.userId);
+      this.getMetricsByIdCarer(Number(this.userId));
+    }
+
     this.color = '#06b6d4';
     this.currentDate = this.getCurrentDate();
     this.fetchMetrics();
