@@ -8,11 +8,13 @@ import { Observable } from 'rxjs';
 export class CarerService {
 
   private baseUrl = 'http://localhost:8080/api/v1/carer';
-  private token = 'eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQ0FSRVIiLCJpZCI6MSwic3ViIjoidGVzdDEyM0BnbWFpbC5jb20iLCJpYXQiOjE3MzE5NzUwMzEsImV4cCI6MTczMjU3OTgzMX0.F0BdMVdQt6eM-H9P5F4HCvB9gL5mPtCy2tFiSD1YLkQ'; // Usa el token adecuado aquí
+  private getToken(): string | null {
+    return localStorage.getItem('authToken');
+  }
 
   private httpOptions = {
     headers: new HttpHeaders({
-      'Authorization': `Bearer ${this.token}`,
+      'Authorization': `Bearer ${this.getToken()}`,
       'Content-Type': 'application/json'
     })
   };

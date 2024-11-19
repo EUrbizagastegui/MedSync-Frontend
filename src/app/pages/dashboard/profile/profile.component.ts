@@ -9,7 +9,6 @@ import {ToastModule} from 'primeng/toast';
 import {ImageModule} from 'primeng/image';
 import {PatientService} from '../../../services/patient/patient.service';
 import {MessageService} from 'primeng/api';
-import {CarerService} from '../../../services/carer/carer.service';
 
 @Component({
   selector: 'app-profile',
@@ -26,21 +25,26 @@ import {CarerService} from '../../../services/carer/carer.service';
   ],
   providers: [MessageService],
   templateUrl: './profile.component.html',
-  styleUrl: './profile.component.css'
+  styleUrls: ['./profile.component.css'] // Corrección: `styleUrls` en lugar de `styleUrl`
 })
 export class ProfileComponent implements OnInit {
   displayDialog: boolean = false;
   displayDialog1: boolean = false;
+  userId: number = +localStorage.getItem('userId')!;
 
-  constructor(private patientService: PatientService, private carerService: CarerService,private messageService: MessageService) {
-  }
+  constructor(
+    private patientService: PatientService,
+    private messageService: MessageService
+  ) {}
 
   ngOnInit() {
+    console.log(this.userId);
     this.loadPatientData();
+    this.loadCarerData(); // Nueva llamada para cargar la información del cuidador
   }
 
   information = {
-    id: '5',
+    id: this.userId,
     name: '',
     lastName: '',
     weight: '',
@@ -48,16 +52,15 @@ export class ProfileComponent implements OnInit {
     phoneNumber: '',
     email: '',
     profilePictureUrl: ''
-    //image: 'https://b2472105.smushcdn.com/2472105/wp-content/uploads/2023/01/Perfil-Profesional-_63-819x1024.jpg?lossy=1&strip=1&webp=1'
-  }
+  };
 
   contactData = {
     id: '',
-    name: '' ,
+    name: '',
     lastName: '',
     phoneNumber: '',
-    profilePictureUrl: '',
-  }
+    profilePictureUrl: ''
+  };
 
   texts = {
     button1: 'Editar Perfil',
@@ -65,10 +68,10 @@ export class ProfileComponent implements OnInit {
     button3: 'Cerrar Sesión',
     btSave: 'Guardar',
     btCancel: 'Cancelar'
-  }
+  };
 
   loadPatientData() {
-    this.patientService.getPatient(this.information.id).subscribe({
+    this.patientService.getPatient(this.userId.toString()).subscribe({
       next: (data) => {
         this.information = { ...this.information, ...data };
       },
@@ -83,6 +86,24 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  loadCarerData() {
+    this.patientService.getPatientCarer(this.userId.toString()).subscribe({
+      next: (data) => {
+        console.log('Datos del cuidador:', data); // Verifica qué datos llegan
+        this.contactData = { ...this.contactData, ...data };
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Advertencia',
+          detail: 'El paciente no tiene un cuidador asignado'
+        });
+        console.error('Error al cargar datos del cuidador:', err); // Muestra el error en consola
+      }
+    });
+  }
+
+
   openDialog() {
     this.displayDialog = true;
   }
@@ -95,14 +116,14 @@ export class ProfileComponent implements OnInit {
       phoneNumber: this.information.phoneNumber
     };
 
-    this.patientService.updatePatient(this.information.id, updatedProfile).subscribe({
+    this.patientService.updatePatient(this.userId.toString(), updatedProfile).subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',
           summary: 'Éxito',
           detail: 'Perfil actualizado correctamente'
         });
-        this.displayDialog = false;  // Cerrar el diálogo
+        this.displayDialog = false;
       },
       error: (err) => {
         this.messageService.add({
@@ -113,59 +134,39 @@ export class ProfileComponent implements OnInit {
         console.error(err);
       }
     });
-    this.displayDialog = false;
   }
 
   cancelEdit() {
     this.displayDialog = false;
   }
 
-  openDialogContact(){
+  openDialogContact() {
     this.displayDialog1 = true;
   }
 
   saveContact() {
-    this.carerService.getCarerByPhoneNumber(this.contactData.phoneNumber).subscribe({
-      next: (data) => {
-        this.contactData.name = data.name;
-        this.contactData.lastName = data.lastName;
-        this.contactData.profilePictureUrl = data.profilePictureUrl;
-
-        const carerAssignment = {
-          patientId: this.information.id,
-          carerId: data.id
-        };
-
-        this.patientService.updatePatientCarer(this.information.id, carerAssignment).subscribe({
-          next: () => {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Éxito',
-              detail: 'Cuidador asignado correctamente al paciente'
-            });
-            this.displayDialog1 = false;
-          },
-          error: (err) => {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: 'No se pudo asignar el cuidador al paciente'
-            });
-            console.error(err);
-          }
+    this.patientService.updatePatientCarer(this.userId.toString(), {
+      patientId: this.information.id,
+      carerId: this.contactData.id
+    }).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Éxito',
+          detail: 'Cuidador asignado correctamente al paciente'
         });
+        this.displayDialog1 = false;
+        this.loadCarerData(); // Refrescar datos del cuidador
       },
       error: (err) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'No se pudo encontrar el cuidador'
+          detail: 'No se pudo asignar el cuidador al paciente'
         });
         console.error(err);
       }
     });
-
-    this.displayDialog1 = false;
   }
 
   cancelContact() {
@@ -173,6 +174,7 @@ export class ProfileComponent implements OnInit {
   }
 
   logout() {
-
+    localStorage.removeItem('userId');
+    window.location.href = '/login';
   }
 }

@@ -8,11 +8,13 @@ import { Observable } from 'rxjs';
 export class PatientService {
 
   private baseUrl = 'http://localhost:8080/api/v1/patients';
-  private token = 'eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQ0FSRVIiLCJpZCI6MSwic3ViIjoidGVzdDEyM0BnbWFpbC5jb20iLCJpYXQiOjE3MzE5NzUwMzEsImV4cCI6MTczMjU3OTgzMX0.F0BdMVdQt6eM-H9P5F4HCvB9gL5mPtCy2tFiSD1YLkQ';
+  private getToken(): string | null {
+    return localStorage.getItem('authToken');
+  }
 
   private httpOptions = {
     headers: new HttpHeaders({
-      'Authorization': `Bearer ${this.token}`,
+      'Authorization': `Bearer ${this.getToken()}`,
       'Content-Type': 'application/json'
     })
   };
@@ -33,5 +35,9 @@ export class PatientService {
 
   updatePatientCarer(patientId: string, carerId: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/${patientId}/carer`, carerId, this.httpOptions);
+  }
+
+  getPatientCarer(patientId: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/${patientId}/carer`, this.httpOptions);
   }
 }

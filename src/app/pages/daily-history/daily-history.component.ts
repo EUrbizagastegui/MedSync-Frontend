@@ -16,7 +16,7 @@ import { MetricsService} from '../../services/metrics/metrics.service';
 export class DailyHistoryComponent implements OnInit {
 
   data: any[] = [];
-  patientId: number = 1;
+  patientId: number = +localStorage.getItem('userId')!;
 
   constructor(private metricsService: MetricsService) {}
 
