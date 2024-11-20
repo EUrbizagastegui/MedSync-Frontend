@@ -25,7 +25,7 @@ export class DailyHistoryComponent implements OnInit {
 
   isPatient: boolean = false;
   isCarer: boolean = false;
-
+  dates = ['2024-11-18','2024-11-19' ,'2024-11-20'];
   constructor(
     private metricsService: MetricsService,
     private carerService: CarerService
@@ -34,8 +34,6 @@ export class DailyHistoryComponent implements OnInit {
   ngOnInit(): void {
     this.isPatient = this.userRole === 'PATIENT';
     this.isCarer = this.userRole === 'CARER';
-
-    const dates = ['2024-11-18','2024-11-19' ,'2024-11-20'];
 
     if (this.isPatient) {
       this.getMetricsByMultipleDates(this.userId, dates);
@@ -51,7 +49,7 @@ export class DailyHistoryComponent implements OnInit {
       (response: any) => {
         if (response && response.id) {
           this.patientId = response.id; // Store the patient ID
-          this.getMetricsByMultipleDates(this.patientId, ['2024-11-18', '2024-11-19']);
+          this.getMetricsByMultipleDates(this.patientId, this.dates);
         } else {
           console.error('No se encontró un paciente asociado al cuidador.');
         }
