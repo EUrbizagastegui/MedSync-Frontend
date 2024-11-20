@@ -36,7 +36,7 @@ export class DailyHistoryComponent implements OnInit {
     this.isCarer = this.userRole === 'CARER';
 
     if (this.isPatient) {
-      this.getMetricsByMultipleDates(this.userId, dates);
+      this.getMetricsByMultipleDates(this.userId, this.dates);
     }
 
     if (this.isCarer) {
