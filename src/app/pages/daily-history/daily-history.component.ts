@@ -86,9 +86,9 @@ export class DailyHistoryComponent implements OnInit {
   mapMetric(metric: any): any {
     return {
       fecha: this.formatDate(metric.date), // Formatea la fecha
-      promedio: metric.average,
-      maxima: metric.maxFrequency,
-      minima: metric.minFrequency,
+      promedio:  parseFloat(metric.average.toFixed(2)), // Redondea el promedio a dos decimales y lo convierte en un númerometric.average,
+      maxima: parseFloat(metric.maxFrequency.toFixed(2)), // Redondea la m metric.maxFrequency,
+      minima: parseFloat(metric.minFrequency.toFixed(2)), // Redondea la m metric.minFrequency,
       paciente: `${metric.patient?.name || 'N/A'} ${metric.patient?.lastname || ''}`
     };
   }
