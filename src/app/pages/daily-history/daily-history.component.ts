@@ -35,7 +35,7 @@ export class DailyHistoryComponent implements OnInit {
     this.isPatient = this.userRole === 'PATIENT';
     this.isCarer = this.userRole === 'CARER';
 
-    const dates = ['2024-11-18', '2024-11-19'];
+    const dates = ['2024-11-18','2024-11-19' ,'2024-11-20'];
 
     if (this.isPatient) {
       this.getMetricsByMultipleDates(this.userId, dates);

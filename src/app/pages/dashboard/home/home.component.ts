@@ -13,11 +13,12 @@ import { CarerService } from '../../../services/carer/carer.service';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   progress = 0;
-  max=130;
+  max=120;
   userId=Number(localStorage.getItem('userId'));;
   userRole: string = localStorage.getItem('userRole')!;
   patientId: any;
   data: any[] = [];
+  carerPatientFullName=localStorage.getItem('carerPatientFullName');
   
   currentDate = '';
   private intervalId: any;
@@ -39,8 +40,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   async fetchMetrics() {
     try {
-      const response = await this.metricsService.getMetricByDate(this.userId, this.currentDate);
-      this.progress = response.average;
+      const response = await this.metricsService.getMetricByDate(this.userId, '2024-11-20');
+      this.progress = parseFloat(response.average.toFixed(2));
       this.getLevel(Number(response.average));
     } catch (error) {
       console.error('Error al obtener las métricas:', error);
@@ -57,7 +58,9 @@ export class HomeComponent implements OnInit, OnDestroy {
           console.log("OBTENIENDO ID DEL PACIENTE.");
           this.userId = response.id; // Almacena el ID del paciente
           console.log(`ID del paciente asociado: ${this.userId}`);
-
+          console.log('name: ', response.name);
+          localStorage.setItem('carerPatientFullName', response.name);
+          console.log('CareerFullName: ', localStorage.getItem('carerPatientFullName'));
         } else {
           console.error('No se encontró un paciente asociado al cuidador.');
         }

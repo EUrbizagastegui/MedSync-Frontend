@@ -3,14 +3,18 @@
         <round-progress
         [current]="progress"
         [max]="max"
-        [color]="color"/>     
-        <div class="flex flex-col gap-4 items-center">
-            <i class="pi pi-heart" style="color: #06b6d4;"></i>
-            <p class="m-0">BPM</p>
-        </div>
+        [color]="color"/>
     </div>
     <div class="text-center">
+        @if (userRole === 'CARER') {
+            <h4>Paciente: {{carerPatientFullName}}</h4>
+        }
         <h4>{{progress}} BPM - {{level}}</h4>
-        <h4>Última medida: 03/11/2024 7:57 PM</h4>
+        <h4>Última medida: 20/11/2024</h4>
+        @if (userRole === 'CARER') {
+            <h4>Role del usuario: Carer</h4>
+        } @else {
+            <h4>Role del usuario: Paciente</h4>
+        }
     </div>
 </div>
