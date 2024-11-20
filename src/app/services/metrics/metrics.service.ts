@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {map, Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +21,25 @@ export class MetricsService {
 
   constructor(private http: HttpClient) { }
 
-  getMetrics(id: number): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/${id}`, this.httpOptions);
+  /*
+  getMetrics(id: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/${id}`, this.httpOptions);
+    //return this.http.get<any[]>(`${this.baseUrl}/${id}`, this.httpOptions);
+  }*/
+
+  getMetrics(id: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/${id}`, this.httpOptions).pipe(
+      map((response: any) => {
+        console.log('Respuesta completa de la API:', response); // Log de la respuesta
+
+        // Verifica si la respuesta es un solo objeto o un array
+        if (Array.isArray(response)) {
+          return response; // Si es un array, lo dejamos tal cual
+        } else {
+          return [response]; // Si es un objeto, lo envolvemos en un array
+        }
+      })
+    );
   }
 
   getMetricByIdData(id: number): Observable<any> {

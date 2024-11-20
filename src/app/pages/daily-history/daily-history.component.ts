@@ -1,8 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {CardModule} from 'primeng/card';
+import { Component, OnInit } from '@angular/core';
+import { CardModule } from 'primeng/card';
 import { CommonModule } from '@angular/common';
-import { MetricsService} from '../../services/metrics/metrics.service';
-import { CarerService} from '../../services/carer/carer.service';
+import { MetricsService } from '../../services/metrics/metrics.service';
+import { CarerService } from '../../services/carer/carer.service';
+import {forkJoin, from} from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-daily-history',
@@ -12,7 +14,7 @@ import { CarerService} from '../../services/carer/carer.service';
     CardModule
   ],
   templateUrl: './daily-history.component.html',
-  styleUrl: './daily-history.component.css'
+  styleUrls: ['./daily-history.component.css']
 })
 export class DailyHistoryComponent implements OnInit {
 
@@ -24,17 +26,22 @@ export class DailyHistoryComponent implements OnInit {
   isPatient: boolean = false;
   isCarer: boolean = false;
 
-  constructor(private metricsService: MetricsService, private carerService: CarerService) {}
+  constructor(
+    private metricsService: MetricsService,
+    private carerService: CarerService
+  ) {}
 
   ngOnInit(): void {
     this.isPatient = this.userRole === 'PATIENT';
     this.isCarer = this.userRole === 'CARER';
 
+    const dates = ['2024-11-18', '2024-11-19'];
+
     if (this.isPatient) {
-      this.getMetricsById(this.userId);
+      this.getMetricsByMultipleDates(this.userId, dates);
     }
+
     if (this.isCarer) {
-      console.log(this.userId);
       this.getMetricsByIdCarer(this.userId);
     }
   }
@@ -42,15 +49,9 @@ export class DailyHistoryComponent implements OnInit {
   getMetricsByIdCarer(carerId: number): void {
     this.carerService.getPatentByCarerId(carerId).subscribe(
       (response: any) => {
-        console.log('Respuesta de la API:', response);
-
         if (response && response.id) {
-          console.log(response);
-          this.patientId = response.id; // Almacena el ID del paciente
-          console.log(`ID del paciente asociado: ${this.patientId}`);
-
-          // Una vez obtenido el ID del paciente, busca sus métricas
-          this.getMetricsById(this.patientId);
+          this.patientId = response.id; // Store the patient ID
+          this.getMetricsByMultipleDates(this.patientId, ['2024-11-18', '2024-11-19']);
         } else {
           console.error('No se encontró un paciente asociado al cuidador.');
         }
@@ -61,26 +62,37 @@ export class DailyHistoryComponent implements OnInit {
     );
   }
 
-  getMetricsById(id: number): void {
-    this.metricsService.getMetrics(id).subscribe(
-      (response: any) => {
-        console.log('Respuesta de la API:', response);
-
-        if (response) {
-          this.data = [{
-            fecha: this.formatDate(response.date),
-            promedio: response.average,
-            maxima: response.maxFrequency,
-            minima: response.minFrequency
-          }];
-        } else {
-          console.error('No se encontró la métrica en la respuesta:', response);
-        }
-      },
-      (error) => {
-        console.error('Error al obtener las métricas:', error);
-      }
+  getMetricsByMultipleDates(patientId: number, dates: string[]): void {
+    const dateObservables = dates.map((date) =>
+      // Si getMetricByDate devuelve una promesa, usar from() para convertirla en un observable
+      from(this.metricsService.getMetricByDate(patientId, date)).pipe(
+        catchError((error) => {
+          console.error(`Error al obtener métricas para la fecha ${date}:`, error);
+          return []; // Devuelve un array vacío si ocurre un error para esa fecha
+        })
+      )
     );
+
+    forkJoin(dateObservables).subscribe((responses) => {
+      const allMetrics = responses.flat(); // Combina todas las métricas de todas las fechas
+      if (allMetrics.length > 0) {
+        this.data = allMetrics.map((metric: any) => this.mapMetric(metric));
+        console.log('Métricas combinadas:', this.data);
+      } else {
+        console.log('No se encontraron métricas para ninguna de las fechas');
+        this.data = [];
+      }
+    });
+  }
+
+  mapMetric(metric: any): any {
+    return {
+      fecha: this.formatDate(metric.date), // Formatea la fecha
+      promedio: metric.average,
+      maxima: metric.maxFrequency,
+      minima: metric.minFrequency,
+      paciente: `${metric.patient?.name || 'N/A'} ${metric.patient?.lastname || ''}`
+    };
   }
 
   formatDate(dateArray: number[]): string {
